@@ -4,6 +4,7 @@ import json
 from time import sleep
 import pandas as pd
 
+
 class QuoraScriptHelpers:
     """
         Functions:
@@ -90,3 +91,15 @@ class QuoraScriptHelpers:
         df.to_excel(QuoraScriptHelpers.FILE_NAME_QUORA_USERS, index=True)
 
         return data_to_return
+
+
+    @staticmethod
+    def dispatch_emails() -> bool:
+        """ Dispatches Quora Space follow invites to users in the FILE_NAME_QUORA_USERS file.
+            Sleeps every 1-5 minutes.
+         """
+
+        # TODO: Open file, loop through each user, and sleep for 1-5 minutes every 20 requests
+        df = pd.read_excel(f"./{QuoraScriptHelpers.FILE_NAME_QUORA_USERS}")
+        print("This is your df", df)
+        return True
