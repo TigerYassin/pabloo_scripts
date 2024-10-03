@@ -113,19 +113,25 @@ class QuoraScriptHelpers:
             print("This is the index", index)
             print("This is the row", row)
             # TODO: Update the df, then set the value to the file - if process breaks, then file is up to date
-            # TODO: Send the invite
+            # TODO: Send the invite and record the status to the file
 
         return True
 
 
-    # Send and invite given the user id
+    # Sends an invite to the given user id
     @staticmethod
-    def send_invite(user_id: str, message_string: str = None):
-        """
-        Sends an invite with the message_string to the quora user_id.
+    def send_invite(user_id: str, message_string: str = None) -> bool:
+        """ Sends an invite with the message_string to the quora user_id.
+
+        Args:
+            user_id (str): The user_id to send the invite to.
+            message_string (str): The message_string to send - Default provided.
+
+        Returns:
+            (bool) Whether the invite was sent.
         """
         if not message_string:
-            message_string = "I’m inviting you to follow The Shopify Space. As a follower, you’ll receive personalized updates on content from the Space."
+            message_string = "I’m inviting you to follow The Shopify Space. As a follower, you’ll receive personalized content related to Business, Sales, Scaling, Development, Digital Marketing, and of course, How to Win!"
 
         print("This is the user_id", user_id)
         url = "https://theshopifyspace.quora.com/graphql/gql_POST?q=TribeInviteMessageModal_tribeInviteUsersAndContactsToPermissionLevel_Mutation"
@@ -136,7 +142,7 @@ class QuoraScriptHelpers:
                 "permission": "follower",  # TODO: Can we edit this?
                 "inviteSource": "tribe_info_header",
                 "inviteAllFollowers": False,  # TODO: Conduct research
-                "inviteAllContacts": False,  # TODO: COnduct research
+                "inviteAllContacts": False,  # TODO: Conduct research
                 "searchList": [
                     int(user_id)
                 ],
@@ -179,5 +185,7 @@ class QuoraScriptHelpers:
         }
 
         response = requests.request("POST", url, headers=headers, json=payload)
-
-        print(response.text)
+        json_response = response.json()
+        print("This is the json response", json_response)
+        is_successful = json_response.get("data", {}).get("tribeInviteUsersAndContactsToPermissionLevel", {}).get("success", False)
+        return bool(is_successful)

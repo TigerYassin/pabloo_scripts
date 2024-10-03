@@ -8,9 +8,14 @@ class QuoraScript:
 
     def run(self) -> bool:
         """ Runs the main process. """
-        email_dispatch_response = QuoraScriptHelpers.dispatch_invites()
-        print("Ran the process with a response of", email_dispatch_response)
-        return email_dispatch_response
+
+        temp_response = QuoraScriptHelpers.send_invite(user_id="228910367")
+        print("This is the resposne", temp_response)
+        return temp_response
+
+        # email_dispatch_response = QuoraScriptHelpers.dispatch_invites()
+        # print("Ran the process with a response of", email_dispatch_response)
+        # return email_dispatch_response
 
 
 if __name__ == "__main__":
